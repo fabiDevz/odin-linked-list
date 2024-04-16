@@ -90,34 +90,122 @@ class ListaEnlazada {
         }
     }
 
-    contains(valor)
-    {
+    contains(valor) {
         let nodo = this.listHeader;
         if (valor == nodo.value) return true;
-    
+
         while (nodo.nextNode != null) {
             nodo = nodo.nextNode;
-            if(nodo.value == valor) return true;
+            if (nodo.value == valor) return true;
         }
         return false;
-    
+
     }
 
-    find(valor)
-    {
+    find(valor) {
         let nodo = this.listHeader;
         let index = 1;
         if (valor == nodo.value) return 1;
-        
+
         while (nodo.nextNode != null) {
             nodo = nodo.nextNode;
             index++
-            if(nodo.value == valor) return index;
+            if (nodo.value == valor) return index;
         }
-       return "No se encuentra el nodo";
-        
+        return null;
+
     }
+
+    toString() {
+        let nodo = this.listHeader;
+        let pantalla = '';
+        while (nodo != null) {
+            pantalla += '( ' + nodo.value + ' ) -> ';
+            nodo = nodo.nextNode;
+        }
+        pantalla += 'null';
+        console.log(pantalla);
+    }
+    // inserta un nodo con valor dado en un lugar especifico 
+    insertAt(value, index) {
+        if (index < 2) {
+            let nodo = new Nodo(value);
+            if (!this.listHeader) {
+                this.listHeader = nodo;
+            } else {
+                nodo.nextNode = this.listHeader;
+                this.listHeader = nodo;
+            }
+        }
+        
+        //caso que se inserta en una posición específica
+        else {
+            let nodo = new Nodo(value);
+            let count = 1;
+            let prev = null;
+            let current = this.listHeader;
+            while (count < index) {
+                prev = current;
+                current = current.nextNode;
+                count++;
+            }
+            nodo.nextNode = current;
+            if (prev) {
+                prev.nextNode = nodo;
+            } else {
+                this.listHeader = nodo;
+            }
+        }
+        
+        //caso que se inserta en la cola
+        if (index >= this.size()) {
+            if (!this.listHeader) {
+                let nodo = new Nodo(value);
+                this.listHeader = nodo;
+            } else {
+                let nodo = new Nodo(value);
+                let actual = this.listHeader;
+                while (actual.nextNode != null) {
+                    actual = actual.nextNode;
+                }
+                actual.nextNode = nodo;
+            }
+        }
+
+
+    }
+
+    removeAt(index) {
+        
+        if (!this.listHeader) {
+            console.log("La lista está vacía, no se puede eliminar ningún nodo.");
+            return;
+        }
     
+     
+        if (index === 0) {
+            this.listHeader = this.listHeader.nextNode;
+            return;
+        }
+    
+    
+        let count = 1;
+        let prev = null;
+        let current = this.listHeader;
+        while (count < index && current) {
+            prev = current;
+            current = current.nextNode;
+            count++;
+        }
+    
+  
+        if (count === index && current) {
+            prev.nextNode = current.nextNode;
+        } else {
+            console.log("Índice fuera de rango, no se puede eliminar ningún nodo.");
+        }
+    }
+
 }
 
 
